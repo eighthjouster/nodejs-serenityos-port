@@ -5,6 +5,11 @@ useconfigure=true
 files="https://nodejs.org/dist/v14.16.0/node-v14.16.0.tar.gz node-v14.16.0.tar.gz"
 #configopts="--disable-nls --without-bash-malloc"
 
+configure() {
+    run ./configure
+}
+
+
 build() {
 #    run_replace_in_file "s/define GETCWD_BROKEN 1/undef GETCWD_BROKEN/" config.h
 #    run_replace_in_file "s/define CAN_REDEFINE_GETENV 1/undef CAN_REDEFINE_GETENV/" config.h
