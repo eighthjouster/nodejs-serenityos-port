@@ -84,6 +84,10 @@ typedef size_t uintptr_t;
 #   define U_HAVE_NL_LANGINFO_CODESET 1
 #endif
 
+#ifdef _ENABLE_MUTEXES
+#else
+#   define U_HAVE_NL_LANGINFO_CODESET 0
+#endif
 #ifdef U_NL_LANGINFO_CODESET
     /* Use the predefined value. */
 #elif !U_HAVE_NL_LANGINFO_CODESET

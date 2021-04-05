@@ -369,8 +369,16 @@
         ],
       }],
       [ 'OS in "linux freebsd openbsd solaris aix"', {
-        'cflags': [ '-pthread' ],
-        'ldflags': [ '-pthread' ],
+        'cflags': [ '-lpthread' ],
+        'ldflags': [ '-lpthread' ],
+      }],
+      [ 'OS in "serenity"', {
+        'cflags': [ '-lpthread' ],
+        'ldflags': [ '-lpthread' ],
+      }],
+      [ 'OS not in "solaris android zos"', {
+        'cflags': [ '-lpthread' ],
+        'ldflags': [ '-lpthread' ],
       }],
       [ 'OS in "linux freebsd openbsd solaris android aix cloudabi"', {
         'cflags': [ '-Wall', '-Wextra', '-Wno-unused-parameter', ],

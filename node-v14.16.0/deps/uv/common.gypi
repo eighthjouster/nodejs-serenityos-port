@@ -160,8 +160,8 @@
             'ldflags': [ '-pthreads' ],
           }],
           [ 'OS not in "solaris android zos"', {
-            'cflags': [ '-pthread' ],
-            'ldflags': [ '-pthread' ],
+            'cflags': [ '-lpthread' ],
+            'ldflags': [ '-lpthread' ],
           }],
           [ 'OS=="aix" and target_arch=="ppc64"', {
             'cflags': [ '-maix64' ],

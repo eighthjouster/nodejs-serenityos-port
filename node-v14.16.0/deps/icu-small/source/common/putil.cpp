@@ -249,8 +249,10 @@ static UDate getUTCtime_real() {
 }
 
 static UDate getUTCtime_fake() {
+#if _ENABLE_MUTEXES
     static UMutex fakeClockMutex;
     umtx_lock(&fakeClockMutex);
+#endif
     if(!fakeClock_set) {
         UDate real = getUTCtime_real();
         const char *fake_start = getenv("U_FAKETIME_START");
@@ -267,7 +269,9 @@ static UDate getUTCtime_fake() {
         }
         fakeClock_set = TRUE;
     }
+#if 0
     umtx_unlock(&fakeClockMutex);
+#endif
 
     return getUTCtime_real() + fakeClock_dt;
 }
@@ -1526,6 +1530,7 @@ u_setTimeZoneFilesDirectory(const char *path, UErrorCode *status) {
 static const char *uprv_getPOSIXIDForCategory(int category)
 {
     const char* posixID = NULL;
+#if _ENABLE_LC_MESSAGES
     if (category == LC_MESSAGES || category == LC_CTYPE) {
         /*
         * On Solaris two different calls to setlocale can result in
@@ -1569,6 +1574,8 @@ static const char *uprv_getPOSIXIDForCategory(int category)
             }
         }
     }
+#else
+#endif
     if ((posixID==0)
         || (uprv_strcmp("C", posixID) == 0)
         || (uprv_strcmp("POSIX", posixID) == 0))
@@ -1590,7 +1597,11 @@ static const char *uprv_getPOSIXIDForDefaultLocale(void)
 {
     static const char* posixID = NULL;
     if (posixID == 0) {
+#if _ENABLE_LC_MESSAGES
         posixID = uprv_getPOSIXIDForCategory(LC_MESSAGES);
+#else
+        posixID = uprv_getPOSIXIDForCategory(0);
+#endif
     }
     return posixID;
 }

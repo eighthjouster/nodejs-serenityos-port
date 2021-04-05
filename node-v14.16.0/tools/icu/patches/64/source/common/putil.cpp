@@ -1511,6 +1511,7 @@ u_setTimeZoneFilesDirectory(const char *path, UErrorCode *status) {
 static const char *uprv_getPOSIXIDForCategory(int category)
 {
     const char* posixID = NULL;
+#if _ENABLE_LC_MESSAGES
     if (category == LC_MESSAGES || category == LC_CTYPE) {
         /*
         * On Solaris two different calls to setlocale can result in
@@ -1554,6 +1555,7 @@ static const char *uprv_getPOSIXIDForCategory(int category)
             }
         }
     }
+#endif
     if ((posixID==0)
         || (uprv_strcmp("C", posixID) == 0)
         || (uprv_strcmp("POSIX", posixID) == 0))
@@ -1575,7 +1577,11 @@ static const char *uprv_getPOSIXIDForDefaultLocale(void)
 {
     static const char* posixID = NULL;
     if (posixID == 0) {
+#if _ENABLE_LC_MESSAGES
         posixID = uprv_getPOSIXIDForCategory(LC_MESSAGES);
+#else
+        posixID = uprv_getPOSIXIDForCategory(0);
+#endif
     }
     return posixID;
 }

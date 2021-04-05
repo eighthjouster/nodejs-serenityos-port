@@ -187,7 +187,7 @@
                 'ldflags': [ '-Wl,DLL' ],
               }],
               ['OS != "solaris" and OS != "android" and OS != "zos"', {
-                'ldflags': [ '-pthread' ],
+                'ldflags': [ '-lpthread' ],
               }],
             ],
           },
