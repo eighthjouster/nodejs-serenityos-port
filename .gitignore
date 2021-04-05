@@ -1,2 +1,9 @@
 node-v14.16.0/out/
+node-v14.16.0/config.mk
+node-v14.16.0/config.gypi
+node-v14.16.0/icu_config.gypi
+node-v14.16.0/tools/__pycache__
+node-v14.16.0/tools/configure.d/__pycache__
+node-v14.16.0/__pycache__
+node-v14.16.0/tools/v8_gypfiles/__pycache__
 
