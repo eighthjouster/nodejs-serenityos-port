@@ -28,6 +28,17 @@ using namespace icu::number::impl;
 
 using icu::double_conversion::DoubleToStringConverter;
 
+#if !_SIGNBIT_NATIVE_DEFINED
+bool ___signbit_(float n) { return (((n) < 0) ? 1 : 0); }
+bool ___signbit_(double n) { return (((n) < 0) ? 1 : 0); }
+bool ___signbit_(long double n) { return (((n) < 0) ? 1 : 0); }
+bool ___isnan_(float n) { return (n != n); }
+bool ___isnan_(double n) { return (n != n); }
+bool ___isnan_(long double n) { return (n != n); }
+bool ___isfinite_(float n) { return false; }
+bool ___isfinite_(double n) { return false; }
+bool ___isfinite_(long double n) { return false; }
+#endif
 
 namespace {
 
@@ -130,7 +141,11 @@ void DecNum::setTo(const char* str, UErrorCode& status) {
 
 void DecNum::setTo(double d, UErrorCode& status) {
     // Need to check for NaN and Infinity before going into DoubleToStringConverter
+#if !_SIGNBIT_NATIVE_DEFINED
+    if (___isnan_(d) != 0 || ___isfinite_(d) == 0) {
+#else
     if (std::isnan(d) != 0 || std::isfinite(d) == 0) {
+#endif
         status = U_UNSUPPORTED_ERROR;
         return;
     }
@@ -157,7 +172,11 @@ void DecNum::setTo(double d, UErrorCode& status) {
 
     // Set exponent and bitmask. Note that DoubleToStringConverter does not do negatives.
     fData.getAlias()->exponent += point - length;
+#if !_SIGNBIT_NATIVE_DEFINED
+    fData.getAlias()->bits |= static_cast<uint8_t>(___signbit_(d) ? DECNEG : 0);
+#else
     fData.getAlias()->bits |= static_cast<uint8_t>(std::signbit(d) ? DECNEG : 0);
+#endif
 }
 
 void DecNum::_setTo(const char* str, int32_t maxDigits, UErrorCode& status) {
