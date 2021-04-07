@@ -190,6 +190,24 @@ unsigned short BIO_ADDR_rawport(const BIO_ADDR *ap)
  * The return value is 0 on failure, with the error code in the error
  * stack, and 1 on success.
  */
+
+#ifndef _ENABLE_GETADDRINFO_FLAGS
+
+#ifndef NI_MAXHOST
+# define NI_MAXHOST 1025
+#endif
+#ifndef NI_MAXSERV
+# define NI_MAXSERV 32
+#endif
+#ifndef NI_NUMERICHOST
+#define NI_NUMERICHOST 1
+#endif
+#ifndef NI_NUMERICSERV
+#define NI_NUMERICSERV 2
+#endif
+
+#endif
+
 static int addr_strings(const BIO_ADDR *ap, int numeric,
                         char **hostname, char **service)
 {
