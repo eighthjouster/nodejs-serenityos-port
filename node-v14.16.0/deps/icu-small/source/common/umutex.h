@@ -231,13 +231,13 @@ public:
 
     // requirements for C++ BasicLockable, allows UMutex to work with std::lock_guard
     void lock() {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
         std::mutex *m = fMutex.load(std::memory_order_acquire);
         if (m == nullptr) { m = getMutex(); }
         m->lock();
 #endif
     }
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     void unlock() { fMutex.load(std::memory_order_relaxed)->unlock(); }
 #else
     void unlock() {}
@@ -246,7 +246,7 @@ public:
     static void cleanup();
 
 private:
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     alignas(std::mutex) char fStorage[sizeof(std::mutex)] {};
     std::atomic<std::mutex *> fMutex { nullptr };
 

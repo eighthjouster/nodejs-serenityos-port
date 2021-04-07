@@ -46,7 +46,7 @@ U_NAMESPACE_BEGIN
  *************************************************************************************************/
 
 namespace {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
 std::mutex *initMutex;
 std::condition_variable *initCondition;
 #endif
@@ -55,7 +55,7 @@ std::condition_variable *initCondition;
 // Used when ICU implementation code passes nullptr for the mutex pointer.
 UMutex globalMutex;
 
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
 std::once_flag initFlag;
 std::once_flag *pInitFlag = &initFlag;
 #endif
@@ -64,7 +64,7 @@ std::once_flag *pInitFlag = &initFlag;
 
 U_CDECL_BEGIN
 static UBool U_CALLCONV umtx_cleanup() {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     initMutex->~mutex();
     initCondition->~condition_variable();
     UMutex::cleanup();
@@ -77,7 +77,7 @@ static UBool U_CALLCONV umtx_cleanup() {
 }
 
 static void U_CALLCONV umtx_init() {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     initMutex = STATIC_NEW(std::mutex);
     initCondition = STATIC_NEW(std::condition_variable);
 #endif
@@ -86,12 +86,12 @@ static void U_CALLCONV umtx_init() {
 U_CDECL_END
 
 
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
 std::mutex *UMutex::getMutex() {
 #else
 void *UMutex::getMutex() {
 #endif
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     std::mutex *retPtr = fMutex.load(std::memory_order_acquire);
     if (retPtr == nullptr) {
         std::call_once(*pInitFlag, umtx_init);
@@ -111,11 +111,11 @@ void *UMutex::getMutex() {
 #endif
 }
 
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
 UMutex *UMutex::gListHead = nullptr;
 #endif
 void UMutex::cleanup() {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     UMutex *next = nullptr;
     for (UMutex *m = gListHead; m != nullptr; m = next) {
         (*m->fMutex).~mutex();
@@ -133,7 +133,7 @@ umtx_lock(UMutex *mutex) {
     if (mutex == nullptr) {
         mutex = &globalMutex;
     }
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     mutex->lock();
 #endif
 }
@@ -145,7 +145,7 @@ umtx_unlock(UMutex* mutex)
     if (mutex == nullptr) {
         mutex = &globalMutex;
     }
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     mutex->unlock();
 #endif
 }
@@ -167,7 +167,7 @@ umtx_unlock(UMutex* mutex)
 //
 U_COMMON_API UBool U_EXPORT2
 umtx_initImplPreInit(UInitOnce &uio) {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     std::call_once(*pInitFlag, umtx_init);
     std::unique_lock<std::mutex> lock(*initMutex);
     if (umtx_loadAcquire(uio.fState) == 0) {
@@ -197,12 +197,12 @@ umtx_initImplPreInit(UInitOnce &uio) {
 U_COMMON_API void U_EXPORT2
 umtx_initImplPostInit(UInitOnce &uio) {
     {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
         std::unique_lock<std::mutex> lock(*initMutex);
 #endif
         umtx_storeRelease(uio.fState, 2);
     }
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     initCondition->notify_all();
 #endif
 }

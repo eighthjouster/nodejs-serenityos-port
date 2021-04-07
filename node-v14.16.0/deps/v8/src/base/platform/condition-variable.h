@@ -60,7 +60,7 @@ class V8_BASE_EXPORT ConditionVariable final {
   bool WaitFor(Mutex* mutex, const TimeDelta& rel_time) V8_WARN_UNUSED_RESULT;
 
   // The implementation-defined native handle type.
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
 
 #if V8_OS_POSIX
   using NativeHandle = pthread_cond_t;

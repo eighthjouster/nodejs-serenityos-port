@@ -48,18 +48,7 @@
 #include "number_modifiers.h"
 #include "formattedval_impl.h"
 #include "number_utils.h"
-
-#if !_SIGNBIT_NATIVE_DEFINED
-bool ___signbit_(float n) { return (((n) < 0) ? 1 : 0); }
-bool ___signbit_(double n) { return (((n) < 0) ? 1 : 0); }
-bool ___signbit_(long double n) { return (((n) < 0) ? 1 : 0); }
-bool ___isnan_(float n) { return (n != n); }
-bool ___isnan_(double n) { return (n != n); }
-bool ___isnan_(long double n) { return (n != n); }
-bool ___isfinite_(float n) { return false; }
-bool ___isfinite_(double n) { return false; }
-bool ___isfinite_(long double n) { return false; }
-#endif
+#include "serenityos_utils.h"
 
 // Copied from uscript_props.cpp
 
@@ -1020,7 +1009,7 @@ void RelativeDateTimeFormatter::formatNumericImpl(
         return;
     }
     UDateDirection direction = UDAT_DIRECTION_NEXT;
-#if !_SIGNBIT_NATIVE_DEFINED
+#ifndef _SIGNBIT_NATIVE_DEFINED
     if (___signbit_(offset)) { // needed to handle -0.0
 #else
     if (std::signbit(offset)) { // needed to handle -0.0

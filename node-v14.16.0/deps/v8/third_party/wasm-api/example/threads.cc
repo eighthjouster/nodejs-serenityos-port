@@ -13,7 +13,7 @@ auto callback(
   void* env, const wasm::Val args[], wasm::Val results[]
 ) -> wasm::own<wasm::Trap> {
   assert(args[0].kind() == wasm::I32);
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
   std::lock_guard<std::mutex>(*reinterpret_cast<std::mutex*>(env));
 #endif
   std::cout << "Thread " << args[0].i32() << " running..." << std::endl;
@@ -24,7 +24,7 @@ auto callback(
 
 void run(
   wasm::Engine* engine, const wasm::Shared<wasm::Module>* shared,
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
   void* mutex
 #else
   std::mutex* mutex
@@ -38,7 +38,7 @@ void run(
   // Obtain.
   auto module = wasm::Module::obtain(store, shared);
   if (!module) {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
     std::lock_guard<std::mutex> lock(*mutex);
 #endif
     std::cout << "> Error compiling module!" << std::endl;
@@ -65,7 +65,7 @@ void run(
     wasm::Extern* imports[] = {func.get(), global.get()};
     auto instance = wasm::Instance::make(store, module.get(), imports);
     if (!instance) {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
       std::lock_guard<std::mutex> lock(*mutex);
 #endif
       std::cout << "> Error instantiating module!" << std::endl;
@@ -75,7 +75,7 @@ void run(
     // Extract export.
     auto exports = instance->exports();
     if (exports.size() == 0 || exports[0]->kind() != wasm::EXTERN_FUNC || !exports[0]->func()) {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
       std::lock_guard<std::mutex> lock(*mutex);
 #endif
       std::cout << "> Error accessing export!" << std::endl;
@@ -115,13 +115,13 @@ int main(int argc, const char *argv[]) {
 
   // Spawn threads.
   std::cout << "Spawning threads..." << std::endl;
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
   std::mutex mutex;
 #endif
   std::thread threads[N_THREADS];
   for (int i = 0; i < N_THREADS; ++i) {
     {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
       std::lock_guard<std::mutex> lock(mutex);
 #endif
       std::cout << "Initializing thread " << i << "..." << std::endl;
@@ -131,7 +131,7 @@ int main(int argc, const char *argv[]) {
 
   for (int i = 0; i < N_THREADS; ++i) {
     {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
       std::lock_guard<std::mutex> lock(mutex);
 #endif
       std::cout << "Waiting for thread " << i << "..." << std::endl;

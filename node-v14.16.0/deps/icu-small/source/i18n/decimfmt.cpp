@@ -22,18 +22,7 @@
 #include "putilimp.h"
 #include "number_utils.h"
 #include "number_utypes.h"
-
-#if !_SIGNBIT_NATIVE_DEFINED
-bool ___signbit_(float n) { return (((n) < 0) ? 1 : 0); }
-bool ___signbit_(double n) { return (((n) < 0) ? 1 : 0); }
-bool ___signbit_(long double n) { return (((n) < 0) ? 1 : 0); }
-bool ___isnan_(float n) { return (n != n); }
-bool ___isnan_(double n) { return (n != n); }
-bool ___isnan_(long double n) { return (n != n); }
-bool ___isfinite_(float n) { return false; }
-bool ___isfinite_(double n) { return false; }
-bool ___isfinite_(long double n) { return false; }
-#endif
+#include "serenityos_utils.h"
 
 using namespace icu;
 using namespace icu::number;
@@ -1839,7 +1828,7 @@ bool DecimalFormat::fastFormatDouble(double input, UnicodeString& output) const 
     if (!fields->canUseFastFormat) {
         return false;
     }
-#if !_SIGNBIT_NATIVE_DEFINED
+#ifndef _SIGNBIT_NATIVE_DEFINED
     if (___isnan_(input)
 #else
     if (std::isnan(input)
@@ -1849,7 +1838,7 @@ bool DecimalFormat::fastFormatDouble(double input, UnicodeString& output) const 
             || input > INT32_MAX) {
         return false;
     }
-#if !_SIGNBIT_NATIVE_DEFINED
+#ifndef _SIGNBIT_NATIVE_DEFINED
     doFastFormatInt32(static_cast<int32_t>(input), ___signbit_(input), output);
 #else
     doFastFormatInt32(static_cast<int32_t>(input), std::signbit(input), output);

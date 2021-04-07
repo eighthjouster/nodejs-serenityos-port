@@ -20,6 +20,7 @@
 #include "charstr.h"
 #include "number_utils.h"
 #include "uassert.h"
+#include "serenityos_utils.h"
 
 using namespace icu;
 using namespace icu::number;
@@ -27,18 +28,6 @@ using namespace icu::number::impl;
 
 using icu::double_conversion::DoubleToStringConverter;
 using icu::double_conversion::StringToDoubleConverter;
-
-#if !_SIGNBIT_NATIVE_DEFINED
-bool ___signbit_(float n) { return (((n) < 0) ? 1 : 0); }
-bool ___signbit_(double n) { return (((n) < 0) ? 1 : 0); }
-bool ___signbit_(long double n) { return (((n) < 0) ? 1 : 0); }
-bool ___isnan_(float n) { return (n != n); }
-bool ___isnan_(double n) { return (n != n); }
-bool ___isnan_(long double n) { return (n != n); }
-bool ___isfinite_(float n) { return false; }
-bool ___isfinite_(double n) { return false; }
-bool ___isfinite_(long double n) { return false; }
-#endif
 
 namespace {
 
@@ -427,7 +416,7 @@ DecimalQuantity &DecimalQuantity::setToDouble(double n) {
     setBcdToZero();
     flags = 0;
     // signbit() from <math.h> handles +0.0 vs -0.0
-#if !_SIGNBIT_NATIVE_DEFINED
+#ifndef _SIGNBIT_NATIVE_DEFINED
     if (___signbit_(n)) {
 #else
     if (std::signbit(n)) {
@@ -435,13 +424,13 @@ DecimalQuantity &DecimalQuantity::setToDouble(double n) {
         flags |= NEGATIVE_FLAG;
         n = -n;
     }
-#if !_SIGNBIT_NATIVE_DEFINED
+#ifndef _SIGNBIT_NATIVE_DEFINED
     if (___isnan_(n) != 0) {
 #else
     if (std::isnan(n) != 0) {
 #endif
         flags |= NAN_FLAG;
-#if !_SIGNBIT_NATIVE_DEFINED
+#ifndef _SIGNBIT_NATIVE_DEFINED
     } else if (___isfinite_(n) == 0) {
 #else
     } else if (std::isfinite(n) == 0) {

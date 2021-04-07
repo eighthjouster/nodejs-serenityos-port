@@ -56,12 +56,12 @@ U_NAMESPACE_BEGIN
 class U_COMMON_API Mutex : public UMemory {
 public:
     Mutex(UMutex *mutex = nullptr) : fMutex(mutex) {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
         umtx_lock(fMutex);
 #endif
     }
     ~Mutex() {
-#if _ENABLE_MUTEXES
+#ifdef _ENABLE_MUTEXES
         umtx_unlock(fMutex);
 #endif
     }
