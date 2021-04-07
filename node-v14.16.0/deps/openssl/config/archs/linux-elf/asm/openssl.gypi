@@ -723,11 +723,10 @@
     'openssl_cflags_linux-elf': [
       '-Wa,--noexecstack',
       '-Wall -O3 -fomit-frame-pointer',
-      '-pthread',
       '-Wall -O3 -fomit-frame-pointer',
     ],
     'openssl_ex_libs_linux-elf': [
-      '-ldl -pthread',
+      '-ldl',
     ],
   },
   'include_dirs': [
