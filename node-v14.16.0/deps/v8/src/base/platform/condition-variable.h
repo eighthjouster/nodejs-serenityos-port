@@ -69,7 +69,7 @@ class V8_BASE_EXPORT ConditionVariable final {
 #endif
 
 #else
-   using NativeHandle = CONDITION_VARIABLE;
+   using NativeHandle = pthread_cond_t;
 #endif
 
   NativeHandle& native_handle() {

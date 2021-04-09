@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#ifdef _ENABLE_SEMAPHORES
+
 #include "src/base/platform/semaphore.h"
 
 #if V8_OS_MACOSX
@@ -161,3 +163,5 @@ bool Semaphore::WaitFor(const TimeDelta& rel_time) {
 
 }  // namespace base
 }  // namespace v8
+
+#endif

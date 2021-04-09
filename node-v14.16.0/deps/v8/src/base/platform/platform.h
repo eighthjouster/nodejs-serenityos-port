@@ -341,10 +341,12 @@ class V8_BASE_EXPORT Thread {
 
   // Start new thread and wait until Run() method is called on the new thread.
   bool StartSynchronously() {
+#ifdef _ENABLE_SEMAPHORES
     start_semaphore_ = new Semaphore(0);
     if (!Start()) return false;
     start_semaphore_->Wait();
     delete start_semaphore_;
+#endif
     start_semaphore_ = nullptr;
     return true;
   }
@@ -395,7 +397,9 @@ class V8_BASE_EXPORT Thread {
   PlatformData* data() { return data_; }
 
   void NotifyStartedAndRun() {
+#ifdef _ENABLE_SEMAPHORES
     if (start_semaphore_) start_semaphore_->Signal();
+#endif
     Run();
   }
 
@@ -406,8 +410,9 @@ class V8_BASE_EXPORT Thread {
 
   char name_[kMaxThreadNameLength];
   int stack_size_;
+#ifdef _ENABLE_SEMAPHORES
   Semaphore* start_semaphore_;
-
+#endif
   DISALLOW_COPY_AND_ASSIGN(Thread);
 };
 
