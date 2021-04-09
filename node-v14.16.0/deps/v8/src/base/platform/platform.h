@@ -21,6 +21,11 @@
 #ifndef V8_BASE_PLATFORM_PLATFORM_H_
 #define V8_BASE_PLATFORM_PLATFORM_H_
 
+#ifndef _SERENITYOS_TIME_DELTA_FORWARD_CLASS
+#include "src/base/platform/time.h"
+#endif
+
+
 #include <cstdarg>
 #include <string>
 #include <vector>
@@ -346,8 +351,8 @@ class V8_BASE_EXPORT Thread {
     if (!Start()) return false;
     start_semaphore_->Wait();
     delete start_semaphore_;
-#endif
     start_semaphore_ = nullptr;
+#endif
     return true;
   }
 
