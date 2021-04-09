@@ -17,6 +17,10 @@
 # define UVWASI_FD_READDIR_SUPPORTED 1
 #endif
 
+#ifndef _SERENITY_OS_FD_READDIR_SUPPORTED
+#undef UVWASI_FD_READDIR_SUPPORTED
+#endif
+
 #include "uvwasi.h"
 #include "uvwasi_alloc.h"
 #include "uv.h"
@@ -32,6 +36,10 @@
 /* IBMi PASE does not support posix_fadvise() */
 #ifdef __PASE__
 # undef POSIX_FADV_NORMAL
+#endif
+
+#ifndef _OS_SERENITY_ENABLE_OSYNC
+#define 	O_SYNC   0x0200
 #endif
 
 #define VALIDATE_FSTFLAGS_OR_RETURN(flags)                                    \

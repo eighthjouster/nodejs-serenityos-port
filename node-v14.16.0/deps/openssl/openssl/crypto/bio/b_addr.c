@@ -199,6 +199,8 @@ unsigned short BIO_ADDR_rawport(const BIO_ADDR *ap)
 #ifndef NI_MAXSERV
 # define NI_MAXSERV 32
 #endif
+// I'm not sure if the values for #define NI_NUMERICHOST and NI_NUMERICSERV below are correct.
+// I pulled them from some random internet page.
 #ifndef NI_NUMERICHOST
 #define NI_NUMERICHOST 1
 #endif

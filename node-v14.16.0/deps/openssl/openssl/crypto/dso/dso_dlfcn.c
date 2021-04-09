@@ -35,6 +35,10 @@
 #  endif
 # endif
 
+#ifndef _SERENITY_OS_MISC
+#undef HAVE_DLINFO
+#endif
+
 /* Part of the hack in "dlfcn_load" ... */
 # define DSO_MAX_TRANSLATED_SIZE 256
 

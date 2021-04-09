@@ -328,6 +328,11 @@ static void uv_udp_queue_recv(uv_loop_t* loop, uv_udp_t* handle) {
 
     buf.base = (char*) uv_zero_;
     buf.len = 0;
+
+#ifndef __ENABLED_MSG_PEEK
+#define MSG_PEEK 0x02
+#endif
+
     flags = MSG_PEEK;
 
     result = handle->func_wsarecv(handle->socket,

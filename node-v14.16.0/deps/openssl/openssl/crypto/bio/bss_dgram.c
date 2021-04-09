@@ -38,6 +38,10 @@
          ((a)->s6_addr32[2] == htonl(0x0000ffff)))
 # endif
 
+#ifndef __ENABLED_MSG_PEEK
+#define MSG_PEEK 0x02
+#endif
+
 static int dgram_write(BIO *h, const char *buf, int num);
 static int dgram_read(BIO *h, char *buf, int size);
 static int dgram_puts(BIO *h, const char *str);
