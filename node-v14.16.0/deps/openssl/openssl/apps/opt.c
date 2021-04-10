@@ -377,6 +377,7 @@ int opt_long(const char *value, long *result)
 /* Parse an intmax_t, put it into *result; return 0 on failure, else 1. */
 int opt_imax(const char *value, intmax_t *result)
 {
+#ifdef _SERENITY_OS_STRTOIMAX_ENABLE
     int oerrno = errno;
     intmax_t m;
     char *endp;
@@ -393,12 +394,15 @@ int opt_imax(const char *value, intmax_t *result)
     }
     *result = m;
     errno = oerrno;
+#else
     return 1;
+#endif
 }
 
 /* Parse a uintmax_t, put it into *result; return 0 on failure, else 1. */
 int opt_umax(const char *value, uintmax_t *result)
 {
+#ifdef _SERENITY_OS_STRTOIMAX_ENABLE
     int oerrno = errno;
     uintmax_t m;
     char *endp;
@@ -415,7 +419,9 @@ int opt_umax(const char *value, uintmax_t *result)
     }
     *result = m;
     errno = oerrno;
+#else
     return 1;
+#endif
 }
 #endif
 

@@ -10,6 +10,7 @@ _OS_SERENITY_ENABLE_DLINFO
 _OS_SERENITY_ENABLE_OSYNC
 _SERENITY_OS_FD_READDIR_SUPPORTED
 _SERENITYOS_TIME_DELTA_FORWARD_CLASS
+_SERENITY_OS_STRTOIMAX_ENABLE
 
 Each one of these must be set to true, 1, or simply defined, when the functionality they are providing is natively implemented in SerenityOS.
 
