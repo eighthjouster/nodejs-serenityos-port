@@ -123,7 +123,11 @@ struct timeval {
  */
 
 #ifdef HAVE_MSG_NOSIGNAL
+#ifdef __ENABLED_MSG_NOSIGNAL
 #define SEND_4TH_ARG MSG_NOSIGNAL
+#else
+#define SEND_4TH_ARG 0x2000
+#endif
 #else
 #define SEND_4TH_ARG 0
 #endif

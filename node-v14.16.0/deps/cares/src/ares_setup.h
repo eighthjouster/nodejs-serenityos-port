@@ -183,6 +183,10 @@
 #  undef HAVE_ARPA_NAMESER_H
 #endif
 
+#ifndef _SERENITYOS_HAS_ARPA_NAMESER_H
+#  undef HAVE_ARPA_NAMESER_H
+#endif
+
 /*
  * Recent autoconf versions define these symbols in ares_config.h. We don't
  * want them (since they collide with the libcurl ones when we build

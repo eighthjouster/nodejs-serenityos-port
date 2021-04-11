@@ -1,6 +1,7 @@
 // Copyright 2016 the V8 project authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+#ifdef _SERENITYOS_COMPLETED_PLATFORMDATA_TYPE
 
 #ifndef V8_LIBSAMPLER_SAMPLER_H_
 #define V8_LIBSAMPLER_SAMPLER_H_
@@ -156,3 +157,5 @@ class V8_EXPORT_PRIVATE SamplerManager {
 }  // namespace v8
 
 #endif  // V8_LIBSAMPLER_SAMPLER_H_
+
+#endif

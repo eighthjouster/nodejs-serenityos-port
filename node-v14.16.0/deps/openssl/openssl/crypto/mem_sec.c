@@ -478,6 +478,7 @@ static int sh_init(size_t size, int minsize)
     if (mprotect(sh.map_result + aligned, pgsize, PROT_NONE) < 0)
         ret = 2;
 
+#ifdef _SERENITYOS_MLOCK_ENABLED
 #if defined(OPENSSL_SYS_LINUX) && defined(MLOCK_ONFAULT) && defined(SYS_mlock2)
     if (syscall(SYS_mlock2, sh.arena, sh.arena_size, MLOCK_ONFAULT) < 0) {
         if (errno == ENOSYS) {
@@ -494,6 +495,8 @@ static int sh_init(size_t size, int minsize)
 #ifdef MADV_DONTDUMP
     if (madvise(sh.arena, sh.arena_size, MADV_DONTDUMP) < 0)
         ret = 2;
+#endif
+
 #endif
 
     return ret;

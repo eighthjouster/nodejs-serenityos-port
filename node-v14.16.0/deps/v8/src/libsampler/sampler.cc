@@ -1,6 +1,7 @@
 // Copyright 2016 the V8 project authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+#ifdef _SERENITYOS_COMPLETED_PLATFORMDATA_TYPE
 
 #include "src/libsampler/sampler.h"
 
@@ -646,3 +647,5 @@ void Sampler::DoSample() {
 
 }  // namespace sampler
 }  // namespace v8
+
+#endif

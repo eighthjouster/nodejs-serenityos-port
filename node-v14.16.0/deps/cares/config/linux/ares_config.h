@@ -59,7 +59,9 @@
 #define HAVE_ARPA_INET_H 1
 
 /* Define to 1 if you have the <arpa/nameser_compat.h> header file. */
+#ifdef _SERENITYOS_HAS_ARPA_NAMESER_H
 #define HAVE_ARPA_NAMESER_COMPAT_H 1
+#endif
 
 /* Define to 1 if you have the <arpa/nameser.h> header file. */
 #define HAVE_ARPA_NAMESER_H 1

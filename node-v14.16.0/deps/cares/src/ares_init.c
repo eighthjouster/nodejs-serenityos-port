@@ -65,6 +65,13 @@
 #undef WIN32  /* Redefined in MingW/MSVC headers */
 #endif
 
+#ifndef _SERENITYOS_INCLASS_ABC_NET
+#define	IN_CLASSA_NET		0xff000000
+#define	IN_CLASSB_NET		0xffff0000
+#define	IN_CLASSC_NET		0xffffff00
+#endif
+
+
 static int init_by_options(ares_channel channel,
                            const struct ares_options *options,
                            int optmask);
