@@ -210,6 +210,10 @@ unsigned short BIO_ADDR_rawport(const BIO_ADDR *ap)
 
 #endif
 
+#ifndef _SERENITY_GETNAMEINFO_IMPLEMENTED
+#undef AI_PASSIVE
+#endif
+
 static int addr_strings(const BIO_ADDR *ap, int numeric,
                         char **hostname, char **service)
 {

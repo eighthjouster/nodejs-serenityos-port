@@ -41,6 +41,10 @@
 #  undef AF_UNIX
 # endif
 
+#ifndef _SERENITY_GETNAMEINFO_IMPLEMENTED
+#undef AI_PASSIVE
+#endif
+
 # ifdef AI_PASSIVE
 
 /*
