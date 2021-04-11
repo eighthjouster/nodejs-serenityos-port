@@ -1,3 +1,5 @@
+NodeJS, version 14.16.0 (node-v14.16.0)
+
 Compiler conditionals used so far:
 
 _ENABLE_MUTEXES

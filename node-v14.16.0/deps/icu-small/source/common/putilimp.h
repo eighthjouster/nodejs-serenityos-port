@@ -76,6 +76,7 @@ typedef size_t uintptr_t;
 /** @{ Information about POSIX support                                       */
 /*===========================================================================*/
 
+#ifdef _ENABLE_MUTEXES
 #ifdef U_HAVE_NL_LANGINFO_CODESET
     /* Use the predefined value. */
 #elif U_PLATFORM_USES_ONLY_WIN32_API || U_PLATFORM == U_PF_ANDROID || U_PLATFORM == U_PF_QNX
@@ -83,12 +84,12 @@ typedef size_t uintptr_t;
 #else
 #   define U_HAVE_NL_LANGINFO_CODESET 1
 #endif
-
-#ifdef _ENABLE_MUTEXES
 #else
 #   define U_HAVE_NL_LANGINFO_CODESET 0
 #endif
+
 #ifdef U_NL_LANGINFO_CODESET
+
     /* Use the predefined value. */
 #elif !U_HAVE_NL_LANGINFO_CODESET
 #   define U_NL_LANGINFO_CODESET -1
