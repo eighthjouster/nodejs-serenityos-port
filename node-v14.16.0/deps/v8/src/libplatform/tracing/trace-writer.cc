@@ -9,6 +9,7 @@
 #include "base/trace_event/common/trace_event_common.h"
 #include "include/v8-platform.h"
 #include "src/base/platform/platform.h"
+#include "serenityos_utils.h"
 
 namespace v8 {
 namespace platform {
@@ -70,7 +71,11 @@ void JSONTraceWriter::AppendArgValue(uint8_t type,
     case TRACE_VALUE_TYPE_DOUBLE: {
       std::string real;
       double val = value.as_double;
+#ifdef _SIGNBIT_NATIVE_DEFINED
       if (std::isfinite(val)) {
+#else
+      if (___isfinite_(val)) {
+#endif
         std::ostringstream convert_stream;
         convert_stream << val;
         real = convert_stream.str();
@@ -82,7 +87,11 @@ void JSONTraceWriter::AppendArgValue(uint8_t type,
             real.find('E') == std::string::npos) {
           real += ".0";
         }
+#ifdef _SIGNBIT_NATIVE_DEFINED
       } else if (std::isnan(val)) {
+#else
+      } else if (___isnan_(val)) {
+#endif
         // The JSON spec doesn't allow NaN and Infinity (since these are
         // objects in EcmaScript).  Use strings instead.
         real = "\"NaN\"";

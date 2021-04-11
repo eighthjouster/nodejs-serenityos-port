@@ -12,8 +12,11 @@
 namespace v8 {
 namespace platform {
 
+#ifdef _ENABLE_SEMAPHORES
 TaskQueue::TaskQueue() : process_queue_semaphore_(0), terminated_(false) {}
-
+#else
+TaskQueue::TaskQueue() : terminated_(false) {}
+#endif
 
 TaskQueue::~TaskQueue() {
   base::MutexGuard guard(&lock_);
@@ -25,7 +28,9 @@ void TaskQueue::Append(std::unique_ptr<Task> task) {
   base::MutexGuard guard(&lock_);
   DCHECK(!terminated_);
   task_queue_.push(std::move(task));
+#ifdef _ENABLE_SEMAPHORES
   process_queue_semaphore_.Signal();
+#endif
 }
 
 std::unique_ptr<Task> TaskQueue::GetNext() {
@@ -38,11 +43,15 @@ std::unique_ptr<Task> TaskQueue::GetNext() {
         return result;
       }
       if (terminated_) {
+#ifdef _ENABLE_SEMAPHORES
         process_queue_semaphore_.Signal();
+#endif
         return nullptr;
       }
     }
+#ifdef _ENABLE_SEMAPHORES
     process_queue_semaphore_.Wait();
+#endif
   }
 }
 
@@ -51,7 +60,9 @@ void TaskQueue::Terminate() {
   base::MutexGuard guard(&lock_);
   DCHECK(!terminated_);
   terminated_ = true;
+#ifdef _ENABLE_SEMAPHORES
   process_queue_semaphore_.Signal();
+#endif
 }
 
 void TaskQueue::BlockUntilQueueEmptyForTesting() {
