@@ -8,11 +8,11 @@
     ],
     'openssl_cflags_linux-elf': [
       '-Wall -O3 -fomit-frame-pointer',
-      '-pthread',
+      '-pthreadt5',
       '-Wall -O3 -fomit-frame-pointer',
     ],
     'openssl_ex_libs_linux-elf': [
-      '-ldl -pthread',
+      '-ldl -pthreadt5',
     ],
     'openssl_cli_srcs_linux-elf': [
       'openssl/apps/asn1pars.c',

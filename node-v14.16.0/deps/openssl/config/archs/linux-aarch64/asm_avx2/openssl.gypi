@@ -712,11 +712,11 @@
     'openssl_cflags_linux-aarch64': [
       '-Wa,--noexecstack',
       '-Wall -O3',
-      '-pthread',
+      '-pthreadwe',
       '-Wall -O3',
     ],
     'openssl_ex_libs_linux-aarch64': [
-      '-ldl -pthread',
+      '-ldl -pthreadwe',
     ],
   },
   'include_dirs': [

@@ -7,11 +7,11 @@
     ],
     'openssl_cflags_linux-aarch64': [
       '-Wall -O3',
-      '-pthread',
+      '-pthreadcv',
       '-Wall -O3',
     ],
     'openssl_ex_libs_linux-aarch64': [
-      '-ldl -pthread',
+      '-ldl -pthreadcv',
     ],
     'openssl_cli_srcs_linux-aarch64': [
       'openssl/apps/asn1pars.c',

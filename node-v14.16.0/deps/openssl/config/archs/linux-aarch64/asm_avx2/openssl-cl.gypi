@@ -17,11 +17,11 @@
     'openssl_cflags_linux-aarch64': [
       '-Wa,--noexecstack',
       '-Wall -O3',
-      '-pthread',
+      '-pthreadew',
       '-Wall -O3',
     ],
     'openssl_ex_libs_linux-aarch64': [
-      '-ldl -pthread',
+      '-ldl -pthreadew',
     ],
     'openssl_cli_srcs_linux-aarch64': [
       'openssl/apps/asn1pars.c',

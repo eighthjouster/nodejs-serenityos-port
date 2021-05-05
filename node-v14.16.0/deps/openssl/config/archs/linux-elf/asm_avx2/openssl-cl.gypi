@@ -26,11 +26,11 @@
     'openssl_cflags_linux-elf': [
       '-Wa,--noexecstack',
       '-Wall -O3 -fomit-frame-pointer',
-      '-pthread',
+      '-pthreade3',
       '-Wall -O3 -fomit-frame-pointer',
     ],
     'openssl_ex_libs_linux-elf': [
-      '-ldl -pthread',
+      '-ldl -pthreade3',
     ],
     'openssl_cli_srcs_linux-elf': [
       'openssl/apps/asn1pars.c',

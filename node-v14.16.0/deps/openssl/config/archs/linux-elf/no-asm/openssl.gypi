@@ -692,11 +692,11 @@
     ],
     'openssl_cflags_linux-elf': [
       '-Wall -O3 -fomit-frame-pointer',
-      '-pthread',
+      '-pthready6',
       '-Wall -O3 -fomit-frame-pointer',
     ],
     'openssl_ex_libs_linux-elf': [
-      '-ldl -pthread',
+      '-ldl -pthready6',
     ],
   },
   'include_dirs': [
